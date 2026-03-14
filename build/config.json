@@ -1,0 +1,47 @@
+{
+  "color_space": {
+    "rgb": {
+      "r": 150,
+      "g": 130,
+      "b": 130
+    },
+    "hsv": {
+      "h_lower": 10,
+      "h_upper": 150,
+      "s": 70,
+      "v": 70
+    },
+    "lab": {
+      "l": 40,
+      "a": 140,
+      "b": 170
+    }
+  },
+  "counting": {
+    "lccp1": {
+        "color": 0,
+        "space": 0.4,
+        "normal": 1,
+        "ct": 120,
+        "st": 0.9
+    },
+    "lccp2": {
+        "color": 0,
+        "space": 0.2,
+        "normal": 1,
+        "ct": 30,
+        "st": 0.3
+    },
+    "global_weights": {
+        "w_length": 1,
+        "w_cross": 1,
+        "w_volume": 1
+    },
+    "ideals": {
+        "length": [0.008, 0.04], 
+        "cross": [0.4, 1.6],
+        "volume": [5e-7, 4e-6],
+        "k_iter": 4
+    }
+  }
+}
