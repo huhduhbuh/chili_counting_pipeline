@@ -28,6 +28,11 @@
 
 #include <random>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
+
 // Types
 
 typedef pcl::PointXYZRGBA PointT;
@@ -72,6 +77,11 @@ int
 main (int argc, char ** argv)
 
 {
+
+  std::ifstream f("config.json");
+
+    json config;
+    f >> config;
 
   if (argc < 2)
 
@@ -129,7 +139,7 @@ main (int argc, char ** argv)
   bool disable_transform = pcl::console::find_switch (argc, argv, "--NT");
 
 
-  float voxel_resolution = 0.008f;
+  float voxel_resolution = config["counting"]["general"]["voxel_res"];
 
   bool voxel_res_specified = pcl::console::find_switch (argc, argv, "-v");
 
@@ -138,7 +148,7 @@ main (int argc, char ** argv)
     pcl::console::parse (argc, argv, "-v", voxel_resolution);
 
 
-  float seed_resolution = 0.01f;
+  float seed_resolution = config["counting"]["general"]["seed_res"];
 
   bool seed_res_specified = pcl::console::find_switch (argc, argv, "-s");
 
@@ -147,21 +157,21 @@ main (int argc, char ** argv)
     pcl::console::parse (argc, argv, "-s", seed_resolution);
 
 
-  float color_importance = 0.0f;
+  float color_importance = config["counting"]["lccp1"]["color"];
 
   if (pcl::console::find_switch (argc, argv, "-c"))
 
     pcl::console::parse (argc, argv, "-c", color_importance);
 
 
-  float spatial_importance = 0.4f;
+  float spatial_importance = config["counting"]["lccp1"]["space"];
 
   if (pcl::console::find_switch (argc, argv, "-z"))
 
     pcl::console::parse (argc, argv, "-z", spatial_importance);
 
 
-  float normal_importance = 1.0f;
+  float normal_importance = config["counting"]["lccp1"]["normal"];
 
   if (pcl::console::find_switch (argc, argv, "-n"))
 
@@ -177,14 +187,14 @@ main (int argc, char ** argv)
 
 
 
-  float concavity_tolerance_threshold = 120;
+  float concavity_tolerance_threshold = config["counting"]["lccp1"]["ct"];
     if (pcl::console::find_switch (argc, argv, "-ct"))
 
     pcl::console::parse (argc, argv, "-ct", concavity_tolerance_threshold);
 
 	
   
-    float smoothness_threshold = 0.9;
+    float smoothness_threshold = config["counting"]["lccp1"]["st"];
   if (pcl::console::find_switch (argc, argv, "-st"))
 
     pcl::console::parse (argc, argv, "-st", smoothness_threshold);
@@ -435,14 +445,14 @@ for (const auto& pair : global_map) {
 
 // PARAMETERS FOR GLOBAL FEATURE EXTRACTION
 
-float w_length = 1;
-float w_cross = 1;
-float w_volume = 1;
-uint32_t k_iter = 4;
+float w_length = config["counting"]["global_weights"]["w_length"];
+float w_cross = config["counting"]["global_weights"]["w_cross"];
+float w_volume = config["counting"]["global_weights"]["w_volume"];
+uint32_t k_iter = config["counting"]["ideals"]["k_iter"];
 
-std::pair<float,float> ideal_length = {0.008f, 0.04f};
-std::pair<float,float> ideal_cross= {0.4f, 1.6f};
-std::pair<float,float> ideal_volume = {5e-7f, 4e-6f}; //{3e-6f, 6e-6f};
+std::pair<float,float> ideal_length = config["counting"]["ideals"]["length"];
+std::pair<float,float> ideal_cross= config["counting"]["ideals"]["cross"];
+std::pair<float,float> ideal_volume = config["counting"]["ideals"]["volume"]; //{3e-6f, 6e-6f};
 
 float merge_dist_threshold = ideal_length.first;
 
@@ -610,11 +620,11 @@ for (size_t i = 0; i < k_iter; i++) {
 
 
     // params for 2nd run
-      float color_importance2 = 0.0f;
-      float spatial_importance2 = 0.2f;
-      float normal_importance2 = 1.0f;
-      float concavity_tolerance_threshold2 = 30;
-      float smoothness_threshold2 = 0.3;
+      float color_importance2 = config["counting"]["lccp2"]["color"];
+      float spatial_importance2 = config["counting"]["lccp2"]["space"];
+      float normal_importance2 = config["counting"]["lccp2"]["normal"];
+      float concavity_tolerance_threshold2 = config["counting"]["lccp2"]["ct"];
+      float smoothness_threshold2 = config["counting"]["lccp2"]["st"];
       //float voxel_resolution2 = 0.001;
       //float seed_resolution2 = 0.002;
 
