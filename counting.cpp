@@ -138,7 +138,7 @@ main (int argc, char ** argv)
     pcl::console::parse (argc, argv, "-v", voxel_resolution);
 
 
-  float seed_resolution = 0.1f;
+  float seed_resolution = 0.01f;
 
   bool seed_res_specified = pcl::console::find_switch (argc, argv, "-s");
 
@@ -177,14 +177,14 @@ main (int argc, char ** argv)
 
 
 
-  float concavity_tolerance_threshold = 20;
+  float concavity_tolerance_threshold = 120;
     if (pcl::console::find_switch (argc, argv, "-ct"))
 
     pcl::console::parse (argc, argv, "-ct", concavity_tolerance_threshold);
 
 	
   
-    float smoothness_threshold = 0.1;
+    float smoothness_threshold = 0.9;
   if (pcl::console::find_switch (argc, argv, "-st"))
 
     pcl::console::parse (argc, argv, "-st", smoothness_threshold);
