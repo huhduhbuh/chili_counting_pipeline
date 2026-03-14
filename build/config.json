@@ -17,7 +17,15 @@
       "b": 170
     }
   },
+  "sor": {
+    "meanK": 50,
+    "StddevMultThresh": 1.0 
+  },
   "counting": {
+    "general" : {
+        "voxel_res": 0.008, 
+        "seed_res": 0.01
+    },
     "lccp1": {
         "color": 0,
         "space": 0.4,

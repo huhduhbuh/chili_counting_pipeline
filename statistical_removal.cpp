@@ -8,11 +8,21 @@
 
 #include <string>
 
+#include <nlohmann/json.hpp>
+
+using json = nlohmann::json;
+
 int
 
 main (int argc, char** argv)
 
 {
+
+
+  std::ifstream f("config.json");
+
+    json config;
+    f >> config;
 
    if (argc != 2)
 
@@ -49,9 +59,9 @@ main (int argc, char** argv)
 
   sor.setInputCloud (cloud);
 
-  sor.setMeanK (50);
+  sor.setMeanK (config["sor"]["meanK"]);
 
-  sor.setStddevMulThresh (1.0);
+  sor.setStddevMulThresh (config["sor"]["StddevMultThresh"]);
 
   sor.filter (*cloud_filtered);
 
