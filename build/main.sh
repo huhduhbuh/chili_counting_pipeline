@@ -1,7 +1,8 @@
 #!/bin/bash
 
-input_filename="1_final.ply"
+input_filename=$1
 config_file="config.json"
+out_folder="default"
 
 
 rgb_output=$(python3 get_red_rgb.py "$input_filename" "$config_file")

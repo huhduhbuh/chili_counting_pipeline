@@ -58,6 +58,6 @@ if __name__ == "__main__":
     o3d.io.write_point_cloud("red_rgb.pcd", red_only)  
 
     # Visualize
-    #o3d.visualization.draw_geometries([red_only], window_name="Red Points")
+    #o3d.visualization.draw_geometries([red_only], window_name="RGB")
 
     print('red_rgb.pcd')
