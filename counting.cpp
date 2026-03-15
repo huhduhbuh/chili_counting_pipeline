@@ -719,58 +719,20 @@ int main (int argc, char ** argv)
   // Combine all clusters into one cloud (optional: color them differently)
   pcl::PointCloud<PointT>::Ptr combined(new pcl::PointCloud<PointT>);
 
-  int color_step = 255 / std::max(1, (int)global_map.size());
-  int color_idx = 0;
-
-  // generate evenly spaced hues
-  std::vector<float> hues;
-  int num_clusters = global_map.size(); 
-  hues.reserve(num_clusters);
-  for (int i = 0; i < num_clusters; i++) {
-      hues.push_back(360.0f * i / num_clusters);
-  }
-  // shuffle hues randomly
-  std::random_device rd;
-  std::mt19937 mt(rd());
-  std::shuffle(hues.begin(), hues.end(), mt);  
-
-
+  int i = 1;
   for (const auto& pair : global_map) {
       PointCloudT::Ptr cluster = pair.second;
       printf("size: %ld\n", cluster->size());
 
-      // pick hue evenly spaced in [0,360)
-      float hue = (360.0f * color_idx) / num_clusters;
-      uint8_t r, g, b;
-      hsv2rgb(hue, 1.0f, 1.0f, r, g, b);  // full saturation & brightness
-
-      //for alternating colors, comment to undo
-      /*if (color_idx % 4 == 0) {
-        r = 255;
-        g = 0;
-        b = 0;
-      } else if (color_idx % 4 == 1) {
-        r = 0;
-        g = 255;
-        b = 0;
-      } else if (color_idx % 4 == 2)  {
-        r = 0;
-        g = 0;
-        b = 255;
-      } else {
-        r = 255;
-        g = 255;
-        b = 255;
-      }*/
-
       for (auto& pt : cluster->points) {
-          pt.r = r;
-          pt.g = g;
-          pt.b = b;
+          pt.r = (i * 53) % 256;
+          pt.g = (i * 97) % 256;
+          pt.b = (i * 193) % 256;
+          pt.a = 1;
       }
 
       *combined += *cluster;
-      color_idx++;
+      i++;
   }
 
   // Visualize
