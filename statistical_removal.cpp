@@ -19,12 +19,12 @@ main (int argc, char** argv)
 {
 
 
-  std::ifstream f("config.json");
+  std::ifstream f(argv[2]);
 
     json config;
     f >> config;
 
-   if (argc != 2)
+   if (argc != 3)
 
   {
 

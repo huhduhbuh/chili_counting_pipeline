@@ -3,6 +3,7 @@ import numpy as np
 import cv2
 import sys
 import json
+import os
 
 o3d.utility.set_verbosity_level(o3d.utility.VerbosityLevel.Error)
 
@@ -10,6 +11,7 @@ o3d.utility.set_verbosity_level(o3d.utility.VerbosityLevel.Error)
 
 input_file = sys.argv[1]
 config_path = sys.argv[2]
+out_path = sys.argv[3]
 
 with open(config_path) as f:
     config = json.load(f)
@@ -56,6 +58,7 @@ red_pcd.colors = o3d.utility.Vector3dVector(red_colors)
 
 #o3d.visualization.draw([red_pcd])
 
-o3d.io.write_point_cloud("red_lab.pcd", red_pcd)
+out_name = os.path.join(out_path, "red_lab.pcd")
+o3d.io.write_point_cloud(out_name, red_pcd)
 
-print('red_lab.pcd', flush=True)
+print(out_name, flush=True)

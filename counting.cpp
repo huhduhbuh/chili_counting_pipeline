@@ -47,11 +47,11 @@ inline void hsv2rgb(float h, float s, float v, uint8_t &r, uint8_t &g, uint8_t &
 
 int main (int argc, char ** argv)
 {
-  std::ifstream f("config.json");
+  std::ifstream f(argv[2]);
   json config;
   f >> config;
 
-  if (argc < 2)
+  if (argc < 3)
   {
     pcl::console::print_error ("Syntax is: %s <pcd-file> \n "
                                 "--NT Dsables the single cloud transform \n"

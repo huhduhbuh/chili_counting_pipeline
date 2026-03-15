@@ -2,6 +2,7 @@ import open3d as o3d
 import numpy as np
 import sys
 import json
+import os
 
 def extract_red_points(pcd, red_threshold=150, green_threshold=130, blue_threshold=130):
     """
@@ -44,6 +45,7 @@ if __name__ == "__main__":
 
     input_file = sys.argv[1]
     config_path = sys.argv[2]
+    out_path = sys.argv[3]
 
     with open(config_path) as f:
         config = json.load(f)
@@ -55,9 +57,10 @@ if __name__ == "__main__":
     red_only = extract_red_points(pcd, red_threshold=int(config['color_space']['rgb']['r']), green_threshold=int(config['color_space']['rgb']['g']), blue_threshold=int(config['color_space']['rgb']['b']))
 
     # Save red points
-    o3d.io.write_point_cloud("red_rgb.pcd", red_only)  
+    out_name = os.path.join(out_path, "red_rgb.pcd")
+    o3d.io.write_point_cloud(out_name, red_only)  
 
     # Visualize
     #o3d.visualization.draw_geometries([red_only], window_name="RGB")
 
-    print('red_rgb.pcd')
+    print(out_name)
