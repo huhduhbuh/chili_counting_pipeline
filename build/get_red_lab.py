@@ -40,12 +40,13 @@ b = lab[:, 2]   # Blue–Yellow
 red_a = a >= int(config['color_space']['lab']['a'])     # increase for stricter red
 
 # Optional: avoid dark noise
-light_enough = L >= int(config['color_space']['lab']['l'])
+l_min, l_max = config['color_space']['lab']['l']
+light_enough = (L >= l_min) & (L <= l_max)
 
 # Optional: avoid yellow/orange confusion
-not_yellow = b <= int(config['color_space']['lab']['b'])
+more_yellow = b >= int(config['color_space']['lab']['b'])
 
-red_mask = red_a & light_enough & not_yellow
+red_mask = red_a & light_enough & more_yellow
 
 points = np.asarray(pcd.points)
 
