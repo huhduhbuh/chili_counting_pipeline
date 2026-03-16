@@ -17,6 +17,7 @@
 #include <string>
 #include <cstdlib>
 #include <ctime> 
+#include <filesystem>
 
 using json = nlohmann::json;
 
@@ -195,16 +196,16 @@ int main (int argc, char ** argv)
     ss << "supervoxel_" << supervoxel_label;
 
     //This function is shown below, but is beyond the scope of this tutorial - basically it just generates a "star" polygon mesh from the points given
-    addSupervoxelConnectionsToViewer (supervoxel->centroid_, adjacent_supervoxel_centers, ss.str (), viewer);
+    //addSupervoxelConnectionsToViewer (supervoxel->centroid_, adjacent_supervoxel_centers, ss.str (), viewer);
 
     //Move iterator forward to next label
     label_itr = supervoxel_adjacency.upper_bound (supervoxel_label);
   }
 
-  while (!viewer->wasStopped ())
-  {
-    viewer->spinOnce (100);
-  }
+  //while (!viewer->wasStopped ())
+  //{
+  //  viewer->spinOnce (100);
+  //}
 
   //////////////////////////////  //////////////////////////////
 
@@ -248,10 +249,10 @@ int main (int argc, char ** argv)
   //cout<<"The run time is :" << (double)(endTime-startTime)/CLOCKS_PER_SEC <<"s"<<endl;
   */
 
-  while (!viewer2->wasStopped ())
-  {
-    viewer2->spinOnce (100);
-  }
+  //while (!viewer2->wasStopped ())
+  //{
+  //  viewer2->spinOnce (100);
+  //}
 
 
   //////////////////////////////  //////////////////////////////
@@ -714,6 +715,32 @@ int main (int argc, char ** argv)
     }
   */
 
+  //////////////////////////////  //////////////////////////////
+
+  ////// PRINT COUNT TO FILE
+
+  //////////////////////////////  //////////////////////////////
+  // File path
+  std::filesystem::path p(basename);
+
+  std::filesystem::path parent = p.parent_path();
+  std::filesystem::path count_file = parent / "count.txt";
+
+  // Open file in append mode (creates file if it doesn't exist)
+  std::ofstream out_file(count_file, std::ios::app);
+
+  if (!out_file) {
+      std::cerr << "Error opening file: " << count_file << std::endl;
+      return 1;
+  }
+
+  // Append the count followed by a newline
+  out_file << global_map.size() << std::endl;
+
+  out_file.close();
+
+  std::cout << "Wrote " << global_map.size() << " to " << filename << std::endl;
+
 
 
   // Combine all clusters into one cloud (optional: color them differently)
@@ -740,9 +767,9 @@ int main (int argc, char ** argv)
   viewer3->addPointCloud<PointT>(combined, "global_cloud");
   viewer3->setBackgroundColor(0,0,0);
 
-  while (!viewer3->wasStopped()) {
-      viewer3->spinOnce(100);
-  }
+  //while (!viewer3->wasStopped()) {
+  //    viewer3->spinOnce(100);
+  //}
 
   // write supervoxel
   std::string final_name = basename + "_final.pcd";

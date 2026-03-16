@@ -6,7 +6,7 @@ out_folder="results/$1/$2/"
 
 # Create the folder if it doesn't exist
 mkdir -p "$out_folder"
-
+rm -rf "$out_folder"/*
 
 rgb_output=$(python3 get_red_rgb.py "$input_filename" "$config_file" "$out_folder")
 echo "RGB output file: $rgb_output"
