@@ -98,15 +98,14 @@ for i in range(N_RUNS):
 
     print("Running config", i)
 
-    subprocess.run([
-        "bash",
-        "main.sh",
-        INPUT_CLOUD,
-        config_name
-    ])
+    subprocess.run(
+        ["bash", "main.sh", INPUT_CLOUD, config_name], 
+        stdout=subprocess.DEVNULL
+        )
 
     # read your pipeline result (assuming one integer per file)
-    with open("results/results.txt") as f:
+    results_file = f"results/{INPUT_CLOUD}/{config_name}/count.txt"
+    with open(results_file) as f:
         rgb, hsv, lab = [int(x.strip()) for x in f.readlines()]
 
     # flatten config for CSV

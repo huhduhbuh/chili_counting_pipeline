@@ -46,6 +46,8 @@ float normalizeWithRange(float value, std::pair<float,float> ideal_range) ;
 uint32_t getNearbySmallCluster(const std::map<std::uint32_t, std::vector<float>>& c_features, uint32_t id, float dist_threshold, std::vector<uint32_t> tagged) ;
 inline void hsv2rgb(float h, float s, float v, uint8_t &r, uint8_t &g, uint8_t &b) ;
 
+void write_count_results(std::string basename, int count) ;
+
 int main (int argc, char ** argv)
 {
   std::ifstream f(argv[2]);
@@ -71,9 +73,26 @@ int main (int argc, char ** argv)
   PointCloudT::Ptr cloud (new PointCloudT);
   pcl::console::print_highlight ("Loading point cloud...\n");
 
+  // FOR WRITING RESULTS TO FILE
+  pcl::PCDWriter writer;
+  std::string filename(argv[1]);
+  size_t last_dot = filename.find_last_of('.');
+  // If a dot was found, take the substring before it
+  std::string basename = (last_dot == std::string::npos) ? filename : filename.substr(0, last_dot);
+  srand(time(0));
+
   if (pcl::io::loadPCDFile<PointT> (argv[1], *cloud))
   {
     pcl::console::print_error ("Error loading cloud file!\n");
+
+    // adjust basename to find the folder still
+    size_t pos = basename.find('\n');
+
+    if (pos != std::string::npos) {
+        basename = basename.substr(pos + 1);
+        std::cout << basename << std::endl;
+    }
+    write_count_results(basename, -1);
     return (1);
   }
 
@@ -260,13 +279,6 @@ int main (int argc, char ** argv)
   ////// WRITING SUPERVOXEL AND LCCP POINT CLOUDS TO FILE
 
   //////////////////////////////  //////////////////////////////
-
-  pcl::PCDWriter writer;
-  std::string filename(argv[1]);
-  size_t last_dot = filename.find_last_of('.');
-  // If a dot was found, take the substring before it
-  std::string basename = (last_dot == std::string::npos) ? filename : filename.substr(0, last_dot);
-  srand(time(0));
 
   // write supervoxel
   std::string super_name = basename + "_super.pcd";
@@ -715,31 +727,7 @@ int main (int argc, char ** argv)
     }
   */
 
-  //////////////////////////////  //////////////////////////////
-
-  ////// PRINT COUNT TO FILE
-
-  //////////////////////////////  //////////////////////////////
-  // File path
-  std::filesystem::path p(basename);
-
-  std::filesystem::path parent = p.parent_path();
-  std::filesystem::path count_file = parent / "count.txt";
-
-  // Open file in append mode (creates file if it doesn't exist)
-  std::ofstream out_file(count_file, std::ios::app);
-
-  if (!out_file) {
-      std::cerr << "Error opening file: " << count_file << std::endl;
-      return 1;
-  }
-
-  // Append the count followed by a newline
-  out_file << global_map.size() << std::endl;
-
-  out_file.close();
-
-  std::cout << "Wrote " << global_map.size() << " to " << filename << std::endl;
+  write_count_results(basename, global_map.size());
 
 
 
@@ -892,4 +880,32 @@ addSupervoxelConnectionsToViewer (PointT &supervoxel_center,
 
   viewer->addModelFromPolyData (polyData,supervoxel_name);
 
+}
+
+void write_count_results(std::string basename, int count) {
+  //////////////////////////////  //////////////////////////////
+
+  ////// PRINT COUNT TO FILE
+
+  //////////////////////////////  //////////////////////////////
+  // File path
+  std::filesystem::path p(basename);
+
+  std::filesystem::path parent = p.parent_path();
+  std::filesystem::path count_file = parent / "count.txt";
+
+  // Open file in append mode (creates file if it doesn't exist)
+  std::ofstream out_file(count_file, std::ios::app);
+
+  if (!out_file) {
+      std::cerr << "Error opening file: " << count_file << std::endl;
+      return;
+  }
+
+  // Append the count followed by a newline
+  out_file << count << std::endl;
+
+  out_file.close();
+
+  std::cout << "Wrote " << count << " to " << count_file << std::endl;
 }
