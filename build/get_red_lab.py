@@ -46,7 +46,7 @@ light_enough = (L >= l_min) & (L <= l_max)
 # Optional: avoid yellow/orange confusion
 more_yellow = b >= int(config['color_space']['lab']['b'])
 
-red_mask = red_a & light_enough & more_yellow
+red_mask = red_a & light_enough# & more_yellow
 
 points = np.asarray(pcd.points)
 
