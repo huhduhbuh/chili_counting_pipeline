@@ -417,14 +417,14 @@ int main (int argc, char ** argv)
               float mid_eVal = pca.getEigenValues()[1];
               float shortest_eVal = pca.getEigenValues()[2];
 
-              printf("pca cluster\n");
+              //printf("pca cluster\n");
 
               
               Eigen::RowVector3f longest_eVec = pca.getEigenVectors().col(0);
               Eigen::RowVector3f mid_eVec = pca.getEigenVectors().col(1);
               Eigen::RowVector3f shortest_eVec = pca.getEigenVectors().col(2);
 
-              printf("eVals %d: %f %f %f\n", label, longest_eVal, mid_eVal, shortest_eVal);
+              //printf("eVals %d: %f %f %f\n", label, longest_eVal, mid_eVal, shortest_eVal);
 
 
 
@@ -442,7 +442,7 @@ int main (int argc, char ** argv)
               }
 
               chili_length = max_proj - min_proj;
-              std::cout << "Estimated chili length: " << chili_length << std::endl;
+              //std::cout << "Estimated chili length: " << chili_length << std::endl;
 
 
 
@@ -459,7 +459,7 @@ int main (int argc, char ** argv)
                   max_proj = std::max(max_proj, proj);
               }
               chili_width = max_proj - min_proj;
-              std::cout << "Estimated chili width: " << chili_width << std::endl;
+              //std::cout << "Estimated chili width: " << chili_width << std::endl;
               // height
               min_proj = std::numeric_limits<float>::max();
               max_proj = std::numeric_limits<float>::lowest();
@@ -470,7 +470,7 @@ int main (int argc, char ** argv)
                   max_proj = std::max(max_proj, proj);
               }
               chili_height = max_proj - min_proj;
-              std::cout << "Estimated chili height: " << chili_height << std::endl;
+              //std::cout << "Estimated chili height: " << chili_height << std::endl;
           } else {
               center = Eigen::Vector3f(cluster_pointcloud->points[0].x, cluster_pointcloud->points[0].y, cluster_pointcloud->points[0].z);
 
@@ -479,7 +479,7 @@ int main (int argc, char ** argv)
 
 
           float chili_cross = chili_width/chili_height;
-          std::cout << "Estimated chili cross section ratio: " << chili_cross << std::endl;
+          //std::cout << "Estimated chili cross section ratio: " << chili_cross << std::endl;
 
 
 
@@ -489,7 +489,7 @@ int main (int argc, char ** argv)
           float h = chili_height / 2.0f;
 
           float chili_volume = (4.0f / 3.0f) * M_PI * l * w * h;
-          std::cout << "Estimated chili volume: " << chili_volume << std::endl;
+          //std::cout << "Estimated chili volume: " << chili_volume << std::endl;
 
 
 
@@ -504,11 +504,11 @@ int main (int argc, char ** argv)
               std::pow(w_volume * chili_volume_norm, 2)
           );
 
-          std::cout << "Normalized chili length: " << chili_length_norm<< std::endl;
-          std::cout << "Normalized chili cross: " << chili_cross_norm << std::endl;
-          std::cout << "Normalized chili volume: " << chili_volume_norm << std::endl;
-          std::cout << "D score: " << d_score << std::endl;
-          std::cout << "" << std::endl;
+          //std::cout << "Normalized chili length: " << chili_length_norm<< std::endl;
+          //std::cout << "Normalized chili cross: " << chili_cross_norm << std::endl;
+          //std::cout << "Normalized chili volume: " << chili_volume_norm << std::endl;
+          //std::cout << "D score: " << d_score << std::endl;
+          //std::cout << "" << std::endl;
 
 
           chili_features[pair.first] = {d_score, center[0], center[1], center[2], chili_length_norm, chili_cross_norm, chili_volume_norm, chili_length};
@@ -700,11 +700,11 @@ int main (int argc, char ** argv)
 
 
       for (const auto& edit : delete_edits) {
-        std::cout << "deleting" << std::endl;
-        std::cout << "length: " << chili_features.at(edit.cluster_id)[4] << std::endl;
-        std::cout << "cross: " << chili_features.at(edit.cluster_id)[5] << std::endl;
-        std::cout << "volume: " << chili_features.at(edit.cluster_id)[6] << std::endl;
-        std::cout << "dscore: " << chili_features.at(edit.cluster_id)[0] << std::endl;
+        //std::cout << "deleting" << std::endl;
+        //std::cout << "length: " << chili_features.at(edit.cluster_id)[4] << std::endl;
+        //std::cout << "cross: " << chili_features.at(edit.cluster_id)[5] << std::endl;
+        //std::cout << "volume: " << chili_features.at(edit.cluster_id)[6] << std::endl;
+        //std::cout << "dscore: " << chili_features.at(edit.cluster_id)[0] << std::endl;
 
         printf("\n");
 

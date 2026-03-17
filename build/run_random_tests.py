@@ -5,8 +5,9 @@ import subprocess
 import os
 import sys
 import csv
+import pandas as pd
 
-N_RUNS = 3
+N_RUNS = 100
 
 INPUT_CLOUD = sys.argv[1]
 CONFIG_FILE = sys.argv[2]
@@ -84,9 +85,9 @@ def sample_config(d):
 
     return result
 
-all_runs = []
 
 for i in range(N_RUNS):
+    all_runs = []
 
     config = sample_config(ranges)
 
@@ -98,31 +99,34 @@ for i in range(N_RUNS):
 
     print("Running config", i)
 
-    subprocess.run(
+    result = subprocess.run(
         ["bash", "main.sh", INPUT_CLOUD, config_name], 
         stdout=subprocess.DEVNULL
         )
+    
+    print("AFTER CONFIG RUN, RESULT IS = " + str(result))
 
-    # read your pipeline result (assuming one integer per file)
-    results_file = f"results/{INPUT_CLOUD}/{config_name}/count.txt"
-    with open(results_file) as f:
-        rgb, hsv, lab = [int(x.strip()) for x in f.readlines()]
+    try:
+        # read your pipeline result (assuming one integer per file)
+        results_file = f"results/{INPUT_CLOUD}/{config_name}/count.txt"
+        with open(results_file) as f:
+            rgb, hsv, lab = [int(x.strip()) for x in f.readlines()]
 
-    # flatten config for CSV
-    flat_config = flatten_dict(config)
-    flat_config["rgb_count"] = rgb
-    flat_config["hsv_count"] = hsv
-    flat_config["lab_count"] = lab
+        # flatten config for CSV
+        flat_config = flatten_dict(config)
+        flat_config["rgb_count"] = rgb
+        flat_config["hsv_count"] = hsv
+        flat_config["lab_count"] = lab
 
-    all_runs.append(flat_config)
+        all_runs.append(flat_config)
 
-# write CSV
-import pandas as pd
 
-df = pd.DataFrame(all_runs)
+        df = pd.DataFrame(all_runs)
 
-# if file exists, append without writing headers
-if os.path.exists(RESULTS_CSV):
-    df.to_csv(RESULTS_CSV, mode='a', index=False, header=False)
-else:
-    df.to_csv(RESULTS_CSV, index=False)
+        # if file exists, append without writing headers
+        if os.path.exists(RESULTS_CSV):
+            df.to_csv(RESULTS_CSV, mode='a', index=False, header=False)
+        else:
+            df.to_csv(RESULTS_CSV, index=False)
+    except Exception as e:
+        print("An error occurred:", e)
