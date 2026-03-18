@@ -1,0 +1,25 @@
+Number of clusters: 22
+Wrote 22 to "results/mergenbv2.ply/4_lab_config2.json/count.txt"
+size: 18
+size: 61
+size: 172
+size: 53
+size: 76
+size: 9
+size: 1
+size: 1
+size: 55
+size: 161
+size: 31
+size: 2
+size: 142
+size: 13
+size: 2
+size: 90
+size: 128
+size: 54
+size: 78
+size: 554
+size: 141
+size: 129
+
